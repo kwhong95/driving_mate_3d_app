@@ -18,14 +18,37 @@ const Box = props => {
   const ref = useRef()
 
   useFrame(state => {
-    ref.current.rotation.x += 0.01
     ref.current.rotation.y += 0.01
   })
 
   return (
-      <mesh ref={ref} {...props} >
+      <mesh
+          ref={ref}
+          {...props}
+          castShadow
+          receiveShadow
+      >
         <boxBufferGeometry />
         <meshBasicMaterial color='blue' />
+      </mesh>
+  )
+}
+
+const Floor = props => {
+  return (
+      <mesh {...props} receiveShadow>
+        <boxBufferGeometry  args={[10, 1, 10]}/>
+        <meshPhongMaterial />
+      </mesh>
+  )
+}
+
+const Light = props => {
+  return (
+      <mesh {...props}>
+        <pointLight castShadow />
+        <sphereBufferGeometry args={[.2, 20, 20]}/>
+        <meshPhongMaterial emissive='yellow' />
       </mesh>
   )
 }
@@ -34,9 +57,15 @@ const App = () => {
   return (
      <div style={{ height: '100vh', width: '100vw' }}>
        <GlobalStyle />
-       <Canvas camera={{ position: [3, 3, 3] }}>
-         <Box  position={[0, 1, 0]} />
+       <Canvas
+           camera={{ position: [3, 3, 3] }}
+           shadows
+       >
+         <ambientLight intensity={.2}/>
          <Orbit />
+         <Light position={[0, 5, 0]} />
+         <Box  position={[0, 2, 0]} />
+         <Floor position={[0, -.5, 0]} />
          <axesHelper args={[5]} />
        </Canvas>
      </div>
