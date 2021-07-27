@@ -9,7 +9,6 @@ const GlobalStyle = createGlobalStyle`
   
   body {
     background: #151515;
-    min-height: 100vh;
   }
 `
 
